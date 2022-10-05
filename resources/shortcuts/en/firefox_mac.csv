@@ -1,0 +1,124 @@
+﻿section,desc,shortcut,important
+Navigation,Back,"⌘ ←, ⌘ [",true
+Navigation,Forward,"⌘ →, ⌘ ]",true
+Navigation,Home,⌥ home,true
+Navigation,Open File,⌘ O,false
+Navigation,Reload,"F5, ⌘ R",true
+Navigation,Reload (override cache),⌘ ⇧ R,false
+Navigation,Stop,"esc, ⌘ .",true
+Current Page,Focus Next Link or Input Field,tab,false
+Current Page,Focus Previous Link or Input Field,⇧ tab,false
+Current Page,Go Down a Screen,"pgdn, fn ↓, space ",true
+Current Page,Go Up a Screen,"pgup, fn ↑, ⇧ space",true
+Current Page,Go to Bottom of Page,"end, ⌘ ↓",true
+Current Page,Go to Top of Page,"home, ⌘ ↑",true
+Current Page,"Move to Next Frame, Pop-Up",F6,false
+Current Page,"Move to Previous Frame, Pop-Up",⇧ F6,false
+Current Page,Print,⌘ P,false
+Current Page,Save Page As,⌘ S,false
+Current Page,Zoom In,⌘ +,true
+Current Page,Zoom Out,⌘ -,true
+Current Page,Zoom Reset,⌘ 0,true
+Editing,Copy,⌘ C,false
+Editing,Cut,⌘ X,false
+Editing,Delete,⌫,false
+Editing,Go to Beginning of Line,home,false
+Editing,Paste,⌘ V,false
+Editing,Paste (as plain text),⌘ ⇧ V,false
+Editing,Redo,⌘ ⇧ Z,false
+Editing,Select All,⌘ A,false
+Editing,Undo,⌘ Z,false
+Search,Find in This Page,⌘ F,true
+Search,Find Again,"F3, ⌘ G",false
+Search,Find Previous,"⇧ F3, ⌘ ⇧ G",false
+Search,Quick Find within link-only text,',false
+Search,Quick Find,/,false
+Search,Close the Find or Quick Find bar,esc,false
+Search,Switch Search Engine,"⌥ ↓, ⌥ ↑",false
+Search,Web Search with Default Search Engine,?,false
+Search,Focus Address Bar for Web Search with Default Search Engine,"⌘ K, ⌘ ⌥ F",true
+Search,Change the Default Search Engine,"⌘ ↓, ⌘ ↑",false
+Windows & Tabs,Close Tab,⌘ W,true
+Windows & Tabs,Close Window,⌘ ⇧ W,true
+Windows & Tabs,Quit,⌘ Q,false
+Windows & Tabs,Go One Tab to the Left,"^ pgup, ⌘ ⌥ ←, ^ ⇧ tab",true
+Windows & Tabs,Go One Tab to the Right,"^ pgdn, ⌘ ⌥ →, ^ tab",true
+Windows & Tabs,Go to Tab 1 to 8,⌘ 1-8,true
+Windows & Tabs,Go to Last Tab,⌘ 9,true
+Windows & Tabs,Move Tab Left,^ ⇧ pgup,true
+Windows & Tabs,Move Tab Right,^ ⇧ pgdn,true
+Windows & Tabs,Move Tab to Start,⌘ ⇧ home,false
+Windows & Tabs,Move Tab to End,⌘ ⇧ end,false
+Windows & Tabs,Mute/Unmute Audio,^ M,false
+Windows & Tabs,New Tab,⌘ T,true
+Windows & Tabs,New Window,⌘ N,true
+Windows & Tabs,New Private Window,⌘ ⇧ P,true
+Windows & Tabs,Open Address or Search in New Background Tab,⌥ ⇧ ⏎,false
+Windows & Tabs,Open Address or Search in New Foreground Tab,⌥ ⏎,false
+Windows & Tabs,Open Address or Search in New Window,⇧ ⏎,false
+Windows & Tabs,Open Search in New Background Tab,⌘ ⇧ ⏎,false
+Windows & Tabs,Open Search in New Foreground Tab,⌘ ⏎,false
+Windows & Tabs,Open Focused Bookmark or Link in Current Tab,⏎,true
+Windows & Tabs,Open Focused Bookmark in New Foreground Tab,⌘ ⏎,false
+Windows & Tabs,Open Focused Bookmark in New Background Tab,⌘ ⇧ ⏎,false
+Windows & Tabs,Open Focused Link in New Background tab,⌘ ⏎,true
+Windows & Tabs,Open Focused Link in New Foreground Tab,⌘ ⇧ ⏎,false
+Windows & Tabs,Open Focused Bookmark or Link in New Window,⇧ ⏎,true
+Windows & Tabs,Show All Tabs,^ ⇧ tab,false
+Windows & Tabs,Undo Close Tab,⌘ ⇧ T,true
+Windows & Tabs,Undo Close Window,⌘ ⇧ N,true
+Windows & Tabs,Move the URL Left or Right (From Address Bar),⌘ ⇧ X,false
+History,History Sidebar,⌘ ⇧ H,true
+History,Clear Recent History,⌘ ⇧ del,true
+Bookmarks,Bookmark All Tabs,⌘ ⇧ D,false
+Bookmarks,Bookmark This Page,⌘ D,true
+Bookmarks,Bookmarks Sidebar,⌘ B,true
+Bookmarks,Show/Hide the Bookmarks Toolbar,⌘ ⇧ B,true
+Bookmarks,Show All Bookmarks (Library Window),⌘ ⇧ O,false
+Bookmarks,Show List of All Bookmarks (From Bookmarks Search Field),space,false
+Tools,Downloads,⌘ J,true
+Tools,Add-ons,⌘ ⇧ A,false
+Tools,Toggle Developer Tools,"F12, ⌘ ⌥ I",false
+Tools,Web Console,⌘ ⌥ K,false
+Tools,Inspector,⌘ ⌥ C,false
+Tools,Take a Screenshot,⌘ ⇧ S,true
+Tools,Style Editor,⇧ F7,false
+Tools,Profiler,⇧ F5,false
+Tools,Network,⌘ ⌥ E,false
+Tools,Responsive Design View,⌘ ⌥ M,false
+Tools,Page Source,⌘ U,false
+Tools,Browser Console,⌘ ⇧ J,false
+Tools,Page Info,⌘ I,false
+PDF Viewer,Next Page,"N, J, →",false
+PDF Viewer,Previous Page,"P, K, ←",false
+PDF Viewer,Zoom In,⌘ +,false
+PDF Viewer,Zoom Out,⌘ -,false
+PDF Viewer,Automatic Zoom,⌘ 0,false
+PDF Viewer,Rotate Clockwise,R,false
+PDF Viewer,Rotate Counterclockwise,⇧ R,false
+PDF Viewer,Switch to Presentation Mode,⌘ ⌥ P,false
+PDF Viewer,Choose Text Selection Tool,S,false
+PDF Viewer,Choose Hand Tool,H,false
+PDF Viewer,Focus the Page Number Input Box,⌘ ⌥ G,false
+Miscellaneous,Complete .com Address,⌘ ⏎,false
+Miscellaneous,Delete Selected Autocomplete Entry,⇧ del,false
+Miscellaneous,Toggle Full Screen,⌘ ⇧ F,true
+Miscellaneous,Toggle Reader Mode,⌘ ⌥ R,true
+Miscellaneous,Caret Browsing,F7,false
+Miscellaneous,Focus Address Bar,"F6, ⌘ L",true
+Miscellaneous,Focus Search Field in Library,"F6, ⌘ F",false
+Miscellaneous,Stop Autoscroll Mode,esc,false
+Miscellaneous,Cancel Drag-and-Drop Operation,esc,false
+Miscellaneous,Clear Search Field in Library or Sidebar,esc,false
+Miscellaneous,Close a Menu,esc,false
+Media Shortcuts,Toggle Play / Pause,space,true
+Media Shortcuts,Decrease Volume,↓,true
+Media Shortcuts,Increase Volume,↑,true
+Media Shortcuts,Mute Audio,⌘ ↓,true
+Media Shortcuts,Unmute Audio,⌘ ↑,true
+Media Shortcuts,Seek Back 15 Seconds,←,true
+Media Shortcuts,Seek Back 10 %,⌘ ←,false
+Media Shortcuts,Seek Forward 15 Seconds,→,true
+Media Shortcuts,Seek Forward 10 %,⌘ →,false
+Media Shortcuts,Seek to the Beginning,home,true
+Media Shortcuts,Seek to the End,end,true
