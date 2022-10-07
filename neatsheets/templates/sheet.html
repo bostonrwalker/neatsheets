@@ -1,0 +1,17 @@
+{% for section in sections %}<h1>{{ section }}</h1>
+<table>{% for task in tasks[section] %}
+    <tr>
+        <td>
+            {{ task.desc }}
+        </td>
+        <td>{% for shortcut in task.shortcut %}{% for item in shortcut %}{% if loop.index > 1 %}
+             + {% endif %}{% if item.__class__.__name__ == 'Keystroke' %}
+            <span class="key">{{ item.value }}</span>{% else %}
+            <span class="key">{{ item.start.value }}</span>
+             to
+            <span class="key">{{ item.end.value }}</span>{% endif %}{% endfor %}
+            <br>{% endfor %}
+        </td>
+    </tr>{% endfor %}
+</table>
+{% endfor %}

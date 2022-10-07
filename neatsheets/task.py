@@ -1,5 +1,6 @@
 import re
 from enum import Enum
+from typing import Iterator
 
 
 class Keystroke(Enum):
@@ -130,6 +131,9 @@ class Shortcut:
 
     def __hash__(self) -> int:
         return hash(self.__keystrokes)
+
+    def __iter__(self) -> Iterator[Keystroke | KeystrokeRange]:
+        return iter(self.__keystrokes)
 
     @staticmethod
     def parse(csv_str: str) -> 'Shortcut':
