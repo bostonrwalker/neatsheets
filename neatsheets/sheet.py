@@ -57,8 +57,8 @@ class Sheet:
         sections = list(dict.fromkeys(task.section for task in self.__tasks))
         tasks = {section: [task for task in self.__tasks if task.section == section] for section in sections}
 
-        env = Environment(loader=PackageLoader('neatsheets'), autoescape=select_autoescape())
-        template = env.get_template('sheet.html')
+        env = Environment(loader=PackageLoader('neatsheets', encoding='UTF-16BE'), autoescape=select_autoescape())
+        template = env.get_template('sheet_table.html')
         return template.render(sections=sections, tasks=tasks)
 
     @staticmethod
@@ -94,50 +94,54 @@ def test_sheet_to_html() -> None:
         Task('Surprises', 'I dunno', (Shortcut(Keystroke.CTRL, KeystrokeRange(Keystroke.ZERO, Keystroke.NINE)), ), True),
     ])
 
-    expected = """<h1>Commands</h1>
+    expected = """<h2>Commands</h2>
 <table>
-    <tr>
-        <td>
-            Create a new workbook
-        </td>
-        <td>
-            <span class="key">^</span>
-             + 
-            <span class="key">N</span>
-            <br>
-        </td>
-    </tr>
-    <tr>
-        <td>
-            Open an existing workbook
-        </td>
-        <td>
-            <span class="key">^</span>
-             + 
-            <span class="key">O</span>
-            <br>
-            <span class="key">^</span>
-             + 
-            <span class="key">⌫</span>
-            <br>
-        </td>
-    </tr>
+    <tbody>
+        <tr>
+            <td>
+                Create a new workbook
+            </td>
+            <td>
+                <span class="key">^</span>
+                 + 
+                <span class="key">N</span>
+                <br>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Open an existing workbook
+            </td>
+            <td>
+                <span class="key">^</span>
+                 + 
+                <span class="key">O</span>
+                <br>
+                <span class="key">^</span>
+                 + 
+                <span class="key">⌫</span>
+                <br>
+            </td>
+        </tr>
+    </tbody>
 </table>
-<h1>Surprises</h1>
+<h2>Surprises</h2>
 <table>
-    <tr>
-        <td>
-            I dunno
-        </td>
-        <td>
-            <span class="key">^</span>
-             + 
-            <span class="key">0</span>
-             to
-            <span class="key">9</span>
-            <br>
-        </td>
-    </tr>
+    <tbody>
+        <tr>
+            <td>
+                I dunno
+            </td>
+            <td>
+                <span class="key">^</span>
+                 + 
+                <span class="key">0</span>
+                 to
+                <span class="key">9</span>
+                <br>
+            </td>
+        </tr>
+    </tbody>
 </table>
 """
 

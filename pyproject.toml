@@ -4,9 +4,14 @@ version = "0.1.0"
 description = ""
 authors = ["Boston Walker"]
 
+[tool.poetry.scripts]
+webserver = 'neatsheets.webserver:main'
+
 [tool.poetry.dependencies]
 python = "^3.10"
 Jinja2 = "^3.1.2"
+fastapi = "^0.85.0"
+uvicorn = "^0.18.3"
 
 [tool.poetry.dev-dependencies]
 pytest = "^7.1.3"

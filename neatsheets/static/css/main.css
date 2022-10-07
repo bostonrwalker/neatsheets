@@ -1,0 +1,42 @@
+
+/* Define fonts */
+@font-face {
+    font-family: "Fira Code";
+    src: url("../fonts/FiraCode-Regular.ttf");
+}
+@font-face {
+    font-family: "JetBrains Mono";
+    src: url("../fonts/JetBrainsMono-Regular.ttf");
+}
+@font-face {
+    font-family: "Inconsolata";
+    src: url("../fonts/Inconsolata-Regular.ttf");
+}
+
+body {
+    font-family: Verdana;
+    font-size: 0.85em;
+}
+
+table {
+    border-top: 1px solid lightgray;
+    border-collapse: collapse;
+}
+
+td {
+    border-bottom: 1px solid lightgray;
+    padding: 4px 8px 4px 0px;
+    line-height: 1.66em;
+    max-width: 320px;
+}
+
+/* Shortcut keys */
+.key {
+  border: 2px solid lightgray;
+  padding: 0px 8px;
+  border-radius: 2px;
+  font-family: 'Fira Code', monospace;
+  font-weight: 400;
+}
+
+
