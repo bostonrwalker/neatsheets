@@ -7,6 +7,7 @@ class Keystroke(Enum):
     """ Map representations in data file to key names """
     BACKSPACE = '⌫'
     CMD = '⌘'
+    WINDOWS = '⊞'
     CTRL = '^'
     DEL = 'del'
     END = 'end'
@@ -14,16 +15,21 @@ class Keystroke(Enum):
     FN = 'fn'
     HOME = 'home'
     OPT = '⌥'
+    ALT = 'alt'
     PGDN = 'pgdn'
     PGUP = 'pgup'
     RET = '⏎'
     SHIFT = '⇧'
     SPACE = 'space'
     TAB = 'tab'
+    SCROLL_LOCK = 'scroll_lock'
     UP = '↑'
     DOWN = '↓'
     LEFT = '←'
     RIGHT = '→'
+    LEFT_OR_RIGHT = '←→'
+    UP_OR_DOWN = '↑↓'
+    ARROW_KEYS = '↑↓←→'
     F1 = 'F1'
     F2 = 'F2'
     F3 = 'F3'
@@ -73,13 +79,18 @@ class Keystroke(Enum):
     NINE = '9'
     ZERO = '0'
     APOSTROPHE = '\''
+    BACKTICK = '`'
     PERIOD = '.'
+    COMMA = ','
+    SEMICOLON = ';'
     QUESTION_MARK = '?'
     SLASH = '/'
     PLUS = '+'
     MINUS = '-'
+    EQUALS = '='
     LEFT_BRACKET = '['
     RIGHT_BRACKET = ']'
+    MOUSE_SCROLL = 'scrollwheel'
 
 
 class KeystrokeRange:
@@ -96,6 +107,11 @@ class KeystrokeRange:
     @property
     def end(self) -> Keystroke:
         return self.__end
+
+    @property
+    def value(self) -> str:
+        """ Format for display / storage in CSV, same as Keystroke enum """
+        return f'{self.__start.value}-{self.__end.value}'
 
     def __str__(self) -> str:
         return (f'KeystrokeRange{{'
@@ -120,6 +136,10 @@ class Shortcut:
     @property
     def keystrokes(self) -> tuple[Keystroke | KeystrokeRange, ...]:
         return self.__keystrokes
+
+    def to_csv_str(self) -> str:
+        """ Format for storage in CSV file """
+        return ' '.join(k.value for k in self.__keystrokes)
 
     def __str__(self) -> str:
         return (f'Shortcut{{'
@@ -174,6 +194,14 @@ class Task:
     @property
     def important(self) -> bool:
         return self.__important
+
+    def to_csv_dict(self) -> dict[str, str]:
+        return {
+            'section': self.__section,
+            'desc': self.__desc,
+            'shortcut': ', '.join(s.to_csv_str() for s in self.__shortcut),
+            'important': 'true' if self.__important else 'false',
+        }
 
     def __str__(self) -> str:
         return (f'Task{{'

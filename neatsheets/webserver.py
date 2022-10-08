@@ -7,7 +7,10 @@ from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 from jinja2 import FileSystemLoader
 
-from neatsheets.sheet import Sheet, Language, Platform
+from neatsheets.language import Language
+from neatsheets.platform import Platform
+from neatsheets.sheet import Sheet
+
 
 root = Path(__file__).parent
 

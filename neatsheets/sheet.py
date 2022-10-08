@@ -1,20 +1,11 @@
-from csv import DictReader
-from enum import Enum
+from csv import DictReader, DictWriter
 from pathlib import Path
-from lxml import html, etree
+from lxml import html
 
+from neatsheets.language import Language
+from neatsheets.platform import Platform
 from neatsheets.task import Task, Shortcut, Keystroke, KeystrokeRange
 from neatsheets.utils import assert_etrees_equal
-
-
-class Language(Enum):
-    EN = 'en'
-    FR = 'fr'
-
-
-class Platform(Enum):
-    MAC = 'mac'
-    PC = 'pc'
 
 
 class Sheet:
@@ -47,6 +38,18 @@ class Sheet:
                 f'language={self.__language},'
                 f'application="{self.__application}",'
                 f'platform={self.__platform}}}')
+
+    def write_csv(self, path: None | Path = None) -> None:
+        """ Write sheet to CSV file """
+
+        path = path or (Path(__file__).parent / 'data' / self.__language.value /
+                        f'{self.__application.lower()}_{self.__platform.value}.csv')
+
+        with path.open('w', encoding='UTF-16BE') as csv_file:
+            writer = DictWriter(csv_file, ('section', 'desc', 'shortcut', 'important'))
+            writer.writeheader()
+            for task in self.__tasks:
+                writer.writerow(task.to_csv_dict())
 
     def to_html(self) -> str:
         """ Render sheet as HTML """
@@ -91,7 +94,8 @@ def test_sheet_to_html() -> None:
         Task('Commands', 'Create a new workbook', (Shortcut(Keystroke.CTRL, Keystroke.N), ), True),
         Task('Commands', 'Open an existing workbook',
              (Shortcut(Keystroke.CTRL, Keystroke.O), Shortcut(Keystroke.CTRL, Keystroke.BACKSPACE)), True),
-        Task('Surprises', 'I dunno', (Shortcut(Keystroke.CTRL, KeystrokeRange(Keystroke.ZERO, Keystroke.NINE)), ), True),
+        Task('Surprises', 'I dunno',
+             (Shortcut(Keystroke.CTRL, KeystrokeRange(Keystroke.ZERO, Keystroke.NINE)), ), True),
     ])
 
     expected = """<h2>Commands</h2>
