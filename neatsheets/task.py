@@ -1,6 +1,6 @@
 import re
 from enum import Enum
-from typing import Iterator
+from typing import Iterator, Any
 
 
 class Keystroke(Enum):
@@ -22,14 +22,11 @@ class Keystroke(Enum):
     SHIFT = '⇧'
     SPACE = 'space'
     TAB = 'tab'
-    SCROLL_LOCK = 'scroll_lock'
+    SCROLL_LOCK = 'scroll\xa0lock'
     UP = '↑'
     DOWN = '↓'
     LEFT = '←'
     RIGHT = '→'
-    LEFT_OR_RIGHT = '←→'
-    UP_OR_DOWN = '↑↓'
-    ARROW_KEYS = '↑↓←→'
     F1 = 'F1'
     F2 = 'F2'
     F3 = 'F3'
@@ -90,7 +87,7 @@ class Keystroke(Enum):
     EQUALS = '='
     LEFT_BRACKET = '['
     RIGHT_BRACKET = ']'
-    MOUSE_SCROLL = 'scrollwheel'
+    MOUSE_SCROLL = '⇳'
 
 
 class KeystrokeRange:
@@ -118,7 +115,7 @@ class KeystrokeRange:
                 f'start={self.__start},'
                 f'end={self.__end}}}')
 
-    def __eq__(self, other) -> bool:
+    def __eq__(self, other: Any) -> bool:
         return (type(other) == KeystrokeRange and
                 self.__start == other.start and
                 self.__end == other.end)
@@ -127,14 +124,41 @@ class KeystrokeRange:
         return hash((self.__start, self.__end))
 
 
-class Shortcut:
-    """ Combination of keystrokes """
+class KeystrokeSet:
+    """ Class representing a set of possible keystrokes, e.g. '↑, ↓, ←, or →'"""
 
-    def __init__(self, *keystrokes: Keystroke | KeystrokeRange):
+    def __init__(self, *keystrokes: Keystroke):
         self.__keystrokes = keystrokes
 
     @property
-    def keystrokes(self) -> tuple[Keystroke | KeystrokeRange, ...]:
+    def keystrokes(self) -> tuple[Keystroke]:
+        return self.__keystrokes
+
+    @property
+    def value(self) -> str:
+        """ Format for display / storage in CSV, same as Keystroke enum """
+        return ''.join(k.value for k in self.__keystrokes)
+
+    def __str__(self) -> str:
+        return (f'KeystrokeSet{{'
+                f'keystrokes={self.__keystrokes}}}')
+
+    def __eq__(self, other: Any) -> bool:
+        return (type(other) == KeystrokeSet and
+                self.__keystrokes == other.keystrokes)
+
+    def __hash__(self) -> int:
+        return hash(self.__keystrokes)
+
+
+class Shortcut:
+    """ Combination of keystrokes """
+
+    def __init__(self, *keystrokes: Keystroke | KeystrokeRange | KeystrokeSet):
+        self.__keystrokes = keystrokes
+
+    @property
+    def keystrokes(self) -> tuple[Keystroke | KeystrokeRange | KeystrokeSet, ...]:
         return self.__keystrokes
 
     def to_csv_str(self) -> str:
@@ -152,21 +176,24 @@ class Shortcut:
     def __hash__(self) -> int:
         return hash(self.__keystrokes)
 
-    def __iter__(self) -> Iterator[Keystroke | KeystrokeRange]:
+    def __iter__(self) -> Iterator[Keystroke | KeystrokeRange | KeystrokeSet]:
         return iter(self.__keystrokes)
 
     @staticmethod
     def parse(csv_str: str) -> 'Shortcut':
         """ Parse combination of keystrokes from CSV file as Shortcut """
-        keystrokes: list[Keystroke | KeystrokeRange] = []
-        for s in csv_str.split():
+        keystrokes: list[Keystroke | KeystrokeRange | KeystrokeSet] = []
+        for s in csv_str.split(' '):
             try:
                 keystrokes.append(Keystroke(s))
             except ValueError as e:
                 try:
                     keystrokes.append(KeystrokeRange(*(Keystroke(k) for k in s.split('-'))))
                 except ValueError as _:
-                    raise e
+                    try:
+                        keystrokes.append(KeystrokeSet(*(Keystroke(k) for k in s)))
+                    except ValueError as _:
+                        raise e
 
         return Shortcut(*keystrokes)
 
@@ -210,7 +237,7 @@ class Task:
                 f'shortcut={self.__shortcut},'
                 f'important={self.__important}}}')
 
-    def __eq__(self, other) -> bool:
+    def __eq__(self, other: Any) -> bool:
         return (type(other) == Task and
                 self.__section == other.section and
                 self.__desc == other.desc and
@@ -232,6 +259,9 @@ def test_parse_shortcut() -> None:
     """ Test parse() function """
     assert Shortcut.parse('⌘ S') == Shortcut(Keystroke.CMD, Keystroke.S)
     assert Shortcut.parse('^ 0-8') == Shortcut(Keystroke.CTRL, KeystrokeRange(Keystroke.ZERO, Keystroke.EIGHT))
+    assert Shortcut.parse('scroll\xa0lock') == Shortcut(Keystroke.SCROLL_LOCK)
+    assert Shortcut.parse('↑↓←→') == Shortcut(KeystrokeSet(Keystroke.UP, Keystroke.DOWN, Keystroke.LEFT,
+                                                           Keystroke.RIGHT))
 
 
 def test_parse_task() -> None:
@@ -241,3 +271,8 @@ def test_parse_task() -> None:
                 'Back',
                 (Shortcut(Keystroke.CMD, Keystroke.LEFT), Shortcut(Keystroke.CMD, Keystroke.LEFT_BRACKET)),
                 True)
+    assert Task.parse('Navigation', 'Scroll Lock', 'scroll\xa0lock', 'false') == \
+           Task('Navigation',
+                'Scroll Lock',
+                (Shortcut(Keystroke.SCROLL_LOCK), ),
+                False)

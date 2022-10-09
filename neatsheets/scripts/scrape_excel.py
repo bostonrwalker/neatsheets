@@ -6,7 +6,7 @@ from lxml.etree import ElementBase
 
 from neatsheets.language import Language
 from neatsheets.sheet import Sheet, Platform
-from neatsheets.task import Keystroke, Shortcut, Task
+from neatsheets.task import Keystroke, Shortcut, Task, KeystrokeSet
 from neatsheets.utils import titlecase
 
 
@@ -24,11 +24,11 @@ def scrape_excel_keyboard_shortcuts() -> tuple[Sheet, Sheet]:
         'Open a Context Menu': '⇧+F10 or ⊞',
         'Move From One Group of Controls to Another': '^+←→',
         'Cycle Through Floating Shapes, Such as Text Boxes or Images': '^+alt+5+tab',
-        'Scroll Horizontally': '^+⇧+scrollwheel',
+        'Scroll Horizontally': '^+⇧+⇳',
         'Insert a Note': '⇧+F2',
         'Insert a Threaded Comment': '^+⇧+F2',
-        'Expand Grouped Rows or Columns': '⇧+scrollwheel',
-        'Collapse Grouped Rows or Columns': '⇧+scrollwheel',
+        'Expand Grouped Rows or Columns': '⇧+⇳',
+        'Collapse Grouped Rows or Columns': '⇧+⇳',
     }
 
     keystroke_subs = {
@@ -58,7 +58,7 @@ def scrape_excel_keyboard_shortcuts() -> tuple[Sheet, Sheet]:
         'Tab key': 'tab',
         'Tab': 'tab',
         'Esc': 'esc',
-        'Scroll lock': 'scroll_lock',
+        'Scroll lock': 'scroll\xa0lock',
         'Up arrow key': '↑',
         'Down arrow key': '↓',
         'Left arrow key': '←',
@@ -70,7 +70,7 @@ def scrape_excel_keyboard_shortcuts() -> tuple[Sheet, Sheet]:
         'End': 'end',
         'Page down': 'pgdn',
         'Page up': 'pgup',
-        ', then scroll the mouse wheel up for left, down for right': '+scrollwheel',
+        ', then scroll the mouse wheel up for left, down for right': '+⇳',
         'Semicolon (;)': ';',
         'Colon (:)': ';',
         'Inch mark/Straight double quote (")': '\'',
@@ -106,9 +106,18 @@ def scrape_excel_keyboard_shortcuts() -> tuple[Sheet, Sheet]:
 
     def _parse_shortcut(text) -> Shortcut:
         try:
+            # Map to standard representations
             for k_old, k_new in keystroke_subs.items():
                 text = text.replace(k_old, k_new)
-            keystrokes = tuple(Keystroke(k) for k in text.split('+'))
+
+            # Parse as single keystroke or set of keystrokes
+            keystrokes = []
+            for k in text.split('+'):
+                try:
+                    keystrokes.append(Keystroke(k))
+                except ValueError:
+                    keystrokes.append(KeystrokeSet(*tuple(Keystroke(kk) for kk in k)))
+
             return Shortcut(*keystrokes)
         except Exception as e:
             print(e)
@@ -174,5 +183,5 @@ def scrape_excel_keyboard_shortcuts() -> tuple[Sheet, Sheet]:
 
 if __name__ == '__main__':
     pc_sheet, mac_sheet = scrape_excel_keyboard_shortcuts()
-    pc_sheet.write_csv()
-    mac_sheet.write_csv()
+    # pc_sheet.write_csv()
+    # mac_sheet.write_csv()

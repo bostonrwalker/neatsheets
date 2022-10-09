@@ -4,7 +4,7 @@ from lxml import html
 
 from neatsheets.language import Language
 from neatsheets.platform import Platform
-from neatsheets.task import Task, Shortcut, Keystroke, KeystrokeRange
+from neatsheets.task import Task, Shortcut, Keystroke, KeystrokeRange, KeystrokeSet
 from neatsheets.utils import assert_etrees_equal
 
 
@@ -91,6 +91,8 @@ def test_sheet_to_html() -> None:
     """ Test to_html() method """
 
     sheet = Sheet(Language.EN, 'Windows', Platform.PC, [
+        Task('Commands', 'Look around',
+             (Shortcut(KeystrokeSet(Keystroke.W, Keystroke.A, Keystroke.S, Keystroke.D)), ), True),
         Task('Commands', 'Create a new workbook', (Shortcut(Keystroke.CTRL, Keystroke.N), ), True),
         Task('Commands', 'Open an existing workbook',
              (Shortcut(Keystroke.CTRL, Keystroke.O), Shortcut(Keystroke.CTRL, Keystroke.BACKSPACE)), True),
@@ -101,6 +103,18 @@ def test_sheet_to_html() -> None:
     expected = """<h2>Commands</h2>
 <table>
     <tbody>
+        <tr>
+            <td>
+                Look around
+            </td>
+            <td>
+                <span class="key">W</span>
+                <span class="key">A</span>
+                <span class="key">S</span>
+                <span class="key">D</span>
+                <br>
+            </td>
+        </tr>
         <tr>
             <td>
                 Create a new workbook
