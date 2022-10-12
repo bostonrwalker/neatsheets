@@ -1,0 +1,9 @@
+logo = 'logo.svg'
+display_name = 'Excel™'
+display_name_full = 'Microsoft Excel™'
+
+[mac]
+data = 'excel_mac.csv'
+
+[pc]
+data = 'excel_pc.csv'

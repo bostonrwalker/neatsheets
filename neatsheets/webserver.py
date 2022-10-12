@@ -7,32 +7,34 @@ from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 from jinja2 import FileSystemLoader
 
+from neatsheets.app import AppManager
 from neatsheets.language import Language
 from neatsheets.platform import Platform
-from neatsheets.sheet import Sheet
 
 
 root = Path(__file__).parent
 
-app = FastAPI()
-app.mount('/static', StaticFiles(directory=(root / 'static')), name='static')
+api = FastAPI()
+api.mount('/static', StaticFiles(directory=(root / 'static')), name='static')
 
 templates = Jinja2Templates(directory=(root / 'templates'),
                             loader=FileSystemLoader((root / 'templates'), encoding='UTF-16BE'))
 
 
-@app.get("/{language}/sheet/{application}", response_class=HTMLResponse)
-@app.get("/{language}/sheet/{application}.html", response_class=HTMLResponse)
-async def sheet(request: Request, language: Language, application: str, platform: Platform = Platform.MAC):
+@api.get("/{language}/sheet/{app_name}", response_class=HTMLResponse)
+@api.get("/{language}/sheet/{app_name}.html", response_class=HTMLResponse)
+async def sheet(request: Request, language: Language, app_name: str, platform: Platform = Platform.Mac):
     """ Render Neatsheet """
-    sheet = Sheet.build_sheet(language, application, platform)
-    return templates.TemplateResponse('sheet.html', {
-        'request': request, 'application': application, 'platform': platform, 'sheet': sheet})
+    app = AppManager.get_instance().get_app(language, app_name)
+    print(str(app.logo.relative_to(root)))
+    return templates.TemplateResponse('app.html', {
+        'request': request, 'root': root, 'app': app, 'selected_platform': platform})
 
 
 def main():
     """ Run webserver """
-    uvicorn.run(app, host='localhost', port=8000, debug=True)
+    AppManager.get_instance().load_all()
+    uvicorn.run(api, host='localhost', port=8000, debug=True)
 
 
 if __name__ == '__main__':

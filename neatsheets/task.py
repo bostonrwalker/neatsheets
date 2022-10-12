@@ -200,15 +200,10 @@ class Shortcut:
 
 class Task:
 
-    def __init__(self, section: str, desc: str, shortcut: tuple[Shortcut, ...], important: bool):
-        self.__section = section
+    def __init__(self, desc: str, shortcut: tuple[Shortcut, ...], important: bool):
         self.__desc = desc
         self.__shortcut = shortcut
         self.__important = important
-
-    @property
-    def section(self) -> str:
-        return self.__section
 
     @property
     def desc(self) -> str:
@@ -224,7 +219,6 @@ class Task:
 
     def to_csv_dict(self) -> dict[str, str]:
         return {
-            'section': self.__section,
             'desc': self.__desc,
             'shortcut': ', '.join(s.to_csv_str() for s in self.__shortcut),
             'important': 'true' if self.__important else 'false',
@@ -232,27 +226,25 @@ class Task:
 
     def __str__(self) -> str:
         return (f'Task{{'
-                f'section="{self.__section}",'
                 f'desc="{self.__desc}",'
                 f'shortcut={self.__shortcut},'
                 f'important={self.__important}}}')
 
     def __eq__(self, other: Any) -> bool:
         return (type(other) == Task and
-                self.__section == other.section and
                 self.__desc == other.desc and
                 self.__shortcut == other.shortcut and
                 self.__important == other.important)
 
     def __hash__(self) -> int:
-        return hash((self.__section, self.__desc, self.__shortcut, self.__important))
+        return hash((self.__desc, self.__shortcut, self.__important))
 
     @staticmethod
-    def parse(section: str, desc: str, shortcut: str, important: str) -> 'Task':
+    def parse(desc: str, shortcut: str, important: str) -> 'Task':
         """ Parse columns from CSV file as Task """
         shortcut = tuple(Shortcut.parse(s) for s in re.split(r'\s*,\s*', shortcut))
-        important = bool(important)
-        return Task(section, desc, shortcut, important)
+        important = important.lower() == 'true'
+        return Task(desc, shortcut, important)
 
 
 def test_parse_shortcut() -> None:
@@ -266,13 +258,11 @@ def test_parse_shortcut() -> None:
 
 def test_parse_task() -> None:
     """ Test parse() function """
-    assert Task.parse('Navigation', 'Back', '⌘ ←, ⌘ [', 'true') == \
-           Task('Navigation',
-                'Back',
+    assert Task.parse('Back', '⌘ ←, ⌘ [', 'true') == \
+           Task('Back',
                 (Shortcut(Keystroke.CMD, Keystroke.LEFT), Shortcut(Keystroke.CMD, Keystroke.LEFT_BRACKET)),
                 True)
-    assert Task.parse('Navigation', 'Scroll Lock', 'scroll\xa0lock', 'false') == \
-           Task('Navigation',
-                'Scroll Lock',
+    assert Task.parse('Scroll Lock', 'scroll\xa0lock', 'false') == \
+           Task('Scroll Lock',
                 (Shortcut(Keystroke.SCROLL_LOCK), ),
                 False)

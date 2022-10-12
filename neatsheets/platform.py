@@ -2,5 +2,5 @@ from enum import Enum
 
 
 class Platform(Enum):
-    MAC = 'mac'
+    Mac = 'mac'
     PC = 'pc'

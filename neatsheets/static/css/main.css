@@ -4,20 +4,19 @@
     font-family: "Fira Code";
     src: url("../fonts/FiraCode-Regular.ttf");
 }
-@font-face {
-    font-family: "JetBrains Mono";
-    src: url("../fonts/JetBrainsMono-Regular.ttf");
-}
-@font-face {
-    font-family: "Inconsolata";
-    src: url("../fonts/Inconsolata-Regular.ttf");
-}
 
 body {
     font-family: Verdana;
     font-size: 0.85em;
 }
 
+/* Logo */
+#logo {
+    height: 30px;
+    margin: auto 4px;
+}
+
+/* Shortcut table */
 table {
     border-top: 1px solid lightgray;
     border-collapse: collapse;

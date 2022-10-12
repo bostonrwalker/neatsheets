@@ -1,0 +1,6 @@
+logo = 'logo.svg'
+display_name = 'Firefox™'
+display_name_full = 'Mozilla Firefox™'
+
+[mac]
+data = 'firefox_mac.csv'
