@@ -63,7 +63,7 @@ class Sheet:
 
 def test_build_sheet() -> None:
     """ Test build_sheet() method """
-    print(Sheet.from_csv(Path(__file__).parent / 'data' / 'en' / 'firefox' / 'firefox_mac.csv'))
+    print(Sheet.from_csv(Path(__file__).parent / 'static' / 'apps' / 'en' / 'firefox' / 'firefox_mac.csv'))
 
 
 def test_sheet_to_html() -> None:

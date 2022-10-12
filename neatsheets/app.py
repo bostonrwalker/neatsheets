@@ -1,6 +1,6 @@
 from collections import defaultdict
 from pathlib import Path
-from typing import Mapping, MutableMapping, Iterable
+from typing import Mapping, MutableMapping, Iterable, Any
 
 import tomli
 
@@ -69,16 +69,28 @@ class App:
         return App(logo, display_name, display_name_full, sheets)
 
 
-class AppManager:
+class _AppManagerMeta(type):
+
+    __instance: dict[type, Any] = {}
+
+    def __init__(cls, name: str, bases: tuple[type, ...], attrs: dict[str, Any]):
+        type.__init__(cls, name, bases, attrs)
+        cls().load_all()
+
+    def __call__(cls, *args, **kwargs):
+        """
+        Override call method of classes to implement singleton pattern
+        https://stackoverflow.com/questions/6760685/creating-a-singleton-in-python
+        """
+
+        if cls not in _AppManagerMeta.__instance:
+            _AppManagerMeta.__instance[cls] = type.__call__(cls, *args, **kwargs)
+
+        return _AppManagerMeta.__instance[cls]
+
+
+class AppManager(metaclass=_AppManagerMeta):
     """ Class to manage loading of App objects from file """
-
-    __instance: 'AppManager' = None
-    @staticmethod
-    def get_instance():
-        if AppManager.__instance is None:
-            AppManager.__instance = AppManager()
-
-        return AppManager.__instance
 
     def __init__(self, path: None | Path = None):
         self.__path = path or Path(__file__).parent / 'static' / 'apps'
@@ -105,5 +117,5 @@ def test_from_path() -> None:
 
 
 def test_load_all() -> None:
-    """ Test loading all apps from path """
-    AppManager.get_instance().load_all()
+    """ Test loading all apps from path (done automatically during AppManager init) """
+    AppManager()

@@ -25,15 +25,13 @@ templates = Jinja2Templates(directory=(root / 'templates'),
 @api.get("/{language}/sheet/{app_name}.html", response_class=HTMLResponse)
 async def sheet(request: Request, language: Language, app_name: str, platform: Platform = Platform.Mac):
     """ Render Neatsheet """
-    app = AppManager.get_instance().get_app(language, app_name)
-    print(str(app.logo.relative_to(root)))
+    app = AppManager().get_app(language, app_name)
     return templates.TemplateResponse('app.html', {
         'request': request, 'root': root, 'app': app, 'selected_platform': platform})
 
 
 def main():
     """ Run webserver """
-    AppManager.get_instance().load_all()
     uvicorn.run(api, host='localhost', port=8000, debug=True)
 
 
